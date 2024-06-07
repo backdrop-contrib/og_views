@@ -6,14 +6,15 @@
  * Install, update, and uninstall functions for the Group views module.
  */
 
-/**
- * Implement hook_uninstall().
+ /**
+ * Move settings from variables to config.
  */
-function og_views_uninstall() {
-  $vars = array(
-    'og_views_global_view',
-  );
-  foreach ($vars as $var) {
-    variable_del($var);
-  }
+function og_views_update_1000() {
+  // Migrate variables to config.
+  $config = config('og_views.settings');
+  $config->set('og_views_global_view', update_variable_get('og_views_global_view', 'og_nodes'));
+  $config->save();
+
+  // Delete variables.
+  update_variable_del('og_views_global_view');
 }

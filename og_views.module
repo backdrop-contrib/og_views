@@ -12,13 +12,24 @@
 define('OG_VIEWS_FIELD', 'og_views');
 
 /**
+ * Implements hook_config_info().
+ */
+function og_views_config_info() {
+  $prefixes['og_views.settings'] = [
+    'label' => t('OG Views Settings'),
+    'group' => t('Configuration'),
+  ];
+  return $prefixes;
+}
+
+/**
  * Implements hook_menu().
  */
 function og_views_menu() {
   $items = array();
 
   $items['admin/config/group/group-views'] = array(
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('og_views_settings'),
     'title' => 'Group views settings',
     'access arguments' => array('administer site configuration'),
@@ -117,7 +128,7 @@ function og_views_field_formatter_view($entity_type, $entity, $field, $instance,
   $element = array();
 
   if ($field['field_name'] == OG_VIEWS_FIELD && !empty($entity->{OG_VIEWS_FIELD}[LANGUAGE_NONE][0]['value'])) {
-    $view = $entity->{OG_VIEWS_FIELD}[LANGUAGE_NONE][0]['value'] == '__global' ? variable_get('og_views_global_view', 'og_nodes') : $entity->{OG_VIEWS_FIELD}[LANGUAGE_NONE][0]['value'];
+    $view = $entity->{OG_VIEWS_FIELD}[LANGUAGE_NONE][0]['value'] == '__global' ? config_get('og_views.settings', 'og_views_global_view') : $entity->{OG_VIEWS_FIELD}[LANGUAGE_NONE][0]['value'];
     if ($view = explode(' ', $view)) {
       list($etid) = entity_extract_ids($entity_type, $entity);
       $group = og_get_group($entity_type, $etid);
