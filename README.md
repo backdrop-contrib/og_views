@@ -11,6 +11,9 @@ The rest of OG's views integration is inside OG core itself, so you
 probably don't need to install this module, unless you want the 
 Views field functionality.
 
+This is being ported for sites that used it to have an easier migration to
+Backdrop. 99% will not need or want this module!
+
 Requirements
 ------------
 
